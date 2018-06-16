@@ -29,11 +29,70 @@ ipcRenderer.on('action', (event: Event, arg: string) => {
     }
 });
 
-class JPlayer extends React.Component<{}, {}> {
+interface IJPlayerState {
+    time: number;
+    totalTime: number;
+    playing: boolean;
+    paused: boolean;
+    volume: number;
+}
+
+class JPlayer extends React.Component<{}, IJPlayerState> {
+    video: HTMLVideoElement;
+    timer: number;
+
+    constructor(props: {}) {
+        super(props);
+
+        this.state = {
+            time: 0,
+            totalTime: 0,
+            playing: false,
+            paused: true,
+            volume: 50
+        };
+    }
+
+    componentDidMount() {
+        this.video = document.querySelector('video');
+    }
+
+    handlePlaying() {
+        this.setState({
+            time: this.state.time ? this.state.time : 0,
+            playing: true,
+            paused: false
+        });
+        this.timer = setInterval(() => {
+            this.setState({
+                time: this.state.time + 1
+            });
+            console.log(this.state.time);
+        }, 1000);
+    }
+
+    handlePause() {
+        this.setState({
+            playing: false,
+            paused: true,
+            time: this.video.currentTime
+        });
+        clearInterval(this.timer);
+    }
+
+    handleVolumeChange(event: React.SyntheticEvent) {
+        console.log(event);
+    }
+
     render() {
         return (
             <div className='fill-container'>
-                <MainPlayer window={{ width: 800, height: 600, scale: 1 }} />
+                <MainPlayer
+                    window={{ width: 800, height: 600, scale: 1 }}
+                    handlePause={this.handlePause.bind(this)}
+                    handlePlaying={this.handlePlaying.bind(this)}
+                    handleVolumeChange={this.handleVolumeChange.bind(this)}
+                />
                 <Controller />
             </div>
         );

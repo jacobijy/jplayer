@@ -1,13 +1,27 @@
 import * as React from 'react';
 import Progress from './components/progress';
 
-export default class Controller extends React.Component {
+interface IControllerState {
+    time: number;
+    totalTime: number;
+    playing: boolean;
+    paused: boolean;
+    volume: number;
+}
+
+export default class Controller extends React.Component<{}, IControllerState> {
+    private controlPanel: HTMLDivElement;
+
+    componentDidMount() {
+        this.controlPanel = document.querySelector('#controller');
+    }
+
     handleMouseOver(event: MouseEvent) {
-        console.log(event);
+        this.controlPanel.className = 'fill-container';
     }
 
     handleMouseOut(event: MouseEvent) {
-        console.log(event);
+        this.controlPanel.className = 'fill-container hide';
     }
 
     render() {
