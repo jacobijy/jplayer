@@ -20,7 +20,9 @@
                 "typeLiterals": "ignore"
             },
             "esSpecCompliant": true //是否允许尾随逗号出现在剩余变量中
-        }]
+        }],
+        "arrow-parens": false,
+        "ordered-imports": false
     },
     "rulesDirectory": []
 }

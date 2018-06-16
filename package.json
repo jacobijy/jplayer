@@ -4,8 +4,12 @@
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "start": "electron ./src/main/index.js",
-    "build": "webpack"
+    "start": "electron ./dist/electron/index.js --enable-logging",
+    "build": "webpack",
+    "build-main": "tsc"
+  },
+  "bin": {
+    "build-main": ""
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -18,13 +22,17 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
+    "@types/electron": "^1.6.10",
+    "@types/node": "^10.3.3",
     "@types/react": "^16.3.17",
     "@types/react-dom": "^16.0.6",
     "awesome-typescript-loader": "^5.0.0",
+    "css-loader": "^0.28.11",
     "electron": "^2.0.0",
     "electron-packager": "^12.1.0",
     "electron-reload": "^1.2.2",
     "source-map-loader": "^0.2.3",
+    "style-loader": "^0.21.0",
     "typescript": "^2.9.2",
     "webpack": "^4.12.0",
     "webpack-cli": "^3.0.7"

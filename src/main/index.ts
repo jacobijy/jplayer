@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, dialog, Menu } from 'electron';
 import { join } from 'path';
+import { readFile } from 'fs';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -11,10 +12,28 @@ function createWindow() {
     mainWindow = new BrowserWindow({ width: 800, height: 600 });
 
     // and load the index.html of the app.
-    mainWindow.loadFile(join(__dirname, '../../index.html'));
+    mainWindow.loadURL(`file://${join(__dirname, '../index.html')}`);
 
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
+
+    const template = [
+        {
+            label: 'File',
+            submenu: [
+                {
+                    label: 'open',
+                    click() {
+                        mainWindow.webContents.send('action', 'open');
+                    }
+                },
+                { label: 'exit', role: 'quit' }
+            ]
+        }
+    ];
+
+    const menu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(menu);
 
     // Emitted when the window is closed.
     mainWindow.on('closed', () => {
@@ -42,7 +61,6 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    console.log(mainWindow);
 
     if (mainWindow === null) {
         createWindow();

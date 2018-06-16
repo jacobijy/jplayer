@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 // Modules to control application life and create native browser window
 var electron_1 = require("electron");
 var path_1 = require("path");
@@ -10,9 +10,25 @@ function createWindow() {
     // Create the browser window.
     mainWindow = new electron_1.BrowserWindow({ width: 800, height: 600 });
     // and load the index.html of the app.
-    mainWindow.loadFile(path_1.join(__dirname, '../../dist/index.html'));
+    mainWindow.loadURL("file://" + path_1.join(__dirname, '../index.html'));
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
+    var template = [
+        {
+            label: 'File',
+            submenu: [
+                {
+                    label: 'open',
+                    click: function () {
+                        mainWindow.webContents.send('action', 'open');
+                    }
+                },
+                { label: 'exit', role: 'quit' }
+            ]
+        }
+    ];
+    var menu = electron_1.Menu.buildFromTemplate(template);
+    electron_1.Menu.setApplicationMenu(menu);
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
         // Dereference the window object, usually you would store windows
@@ -36,10 +52,10 @@ electron_1.app.on('window-all-closed', function () {
 electron_1.app.on('activate', function () {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    console.log(mainWindow);
     if (mainWindow === null) {
         createWindow();
     }
 });
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+//# sourceMappingURL=index.js.map
