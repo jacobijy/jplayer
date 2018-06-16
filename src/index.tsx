@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import MainPlayer from './render';
+import MainPlayer from './renderer/player';
+import Controller from './renderer/controller';
 import { ipcRenderer, remote } from 'electron';
-import { readFile } from 'fs';
 
 ipcRenderer.on('action', (event: Event, arg: string) => {
     switch (arg) {
@@ -31,7 +31,12 @@ ipcRenderer.on('action', (event: Event, arg: string) => {
 
 class JPlayer extends React.Component<{}, {}> {
     render() {
-        return <MainPlayer window={{ width: 800, height: 600, scale: 1 }} />;
+        return (
+            <div className='fill-container'>
+                <MainPlayer window={{ width: 800, height: 600, scale: 1 }} />
+                <Controller />
+            </div>
+        );
     }
 }
 

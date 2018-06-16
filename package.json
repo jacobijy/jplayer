@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron ./dist/electron/index.js --enable-logging",
-    "build": "webpack",
+    "build": "webpack --watch",
     "build-main": "tsc"
   },
   "bin": {
@@ -26,6 +26,7 @@
     "@types/node": "^10.3.3",
     "@types/react": "^16.3.17",
     "@types/react-dom": "^16.0.6",
+    "@types/webpack": "^4.4.0",
     "awesome-typescript-loader": "^5.0.0",
     "css-loader": "^0.28.11",
     "electron": "^2.0.0",

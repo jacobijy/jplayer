@@ -1,2 +1,1 @@
-#INNERNETWORK Video Player
-npm 
+# Inner Network Video Player

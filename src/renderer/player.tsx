@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import './css/App.css';
 
 export interface IPlayerProps { window: { width: number, height: number, scale: number }; }
