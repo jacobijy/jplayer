@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // Modules to control application life and create native browser window
 var electron_1 = require("electron");
 var path_1 = require("path");
+var menu_1 = require("./menu");
+var shortcut_1 = require("./shortcut");
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow;
@@ -13,22 +15,8 @@ function createWindow() {
     mainWindow.loadURL("file://" + path_1.join(__dirname, '../index.html'));
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
-    var template = [
-        {
-            label: 'File',
-            submenu: [
-                {
-                    label: 'open',
-                    click: function () {
-                        mainWindow.webContents.send('action', 'open');
-                    }
-                },
-                { label: 'exit', role: 'quit' }
-            ]
-        }
-    ];
-    var menu = electron_1.Menu.buildFromTemplate(template);
-    electron_1.Menu.setApplicationMenu(menu);
+    menu_1.default();
+    shortcut_1.default();
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
         // Dereference the window object, usually you would store windows

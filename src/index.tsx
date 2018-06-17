@@ -61,13 +61,13 @@ class JPlayer extends React.Component<{}, IJPlayerState> {
         this.setState({
             time: this.state.time ? this.state.time : 0,
             playing: true,
-            paused: false
+            paused: false,
+            totalTime: this.video.duration
         });
-        this.timer = setInterval(() => {
+        this.timer = window.setInterval(() => {
             this.setState({
-                time: this.state.time + 1
+                time: this.video.currentTime
             });
-            console.log(this.state.time);
         }, 1000);
     }
 
@@ -77,14 +77,17 @@ class JPlayer extends React.Component<{}, IJPlayerState> {
             paused: true,
             time: this.video.currentTime
         });
-        clearInterval(this.timer);
+        window.clearInterval(this.timer);
     }
 
     handleVolumeChange(event: React.SyntheticEvent) {
-        console.log(event);
+        this.setState({
+            volume: this.video.volume
+        });
     }
 
     render() {
+        const { time, totalTime, playing, paused, volume } = this.state;
         return (
             <div className='fill-container'>
                 <MainPlayer
@@ -93,7 +96,13 @@ class JPlayer extends React.Component<{}, IJPlayerState> {
                     handlePlaying={this.handlePlaying.bind(this)}
                     handleVolumeChange={this.handleVolumeChange.bind(this)}
                 />
-                <Controller />
+                <Controller
+                    time={time}
+                    totalTime={totalTime}
+                    playing={playing}
+                    paused={paused}
+                    volume={volume}
+                />
             </div>
         );
     }

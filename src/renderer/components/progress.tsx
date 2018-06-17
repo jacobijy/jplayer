@@ -6,24 +6,22 @@ interface IProgressProps {
     icon?: string;
     backgroudcolor?: string;
     progresscolor?: string;
-}
-
-interface IProgressState {
     percent: number;
 }
 
-export default class Progress extends React.Component<IProgressProps, IProgressState> {
+export default class Progress extends React.Component<IProgressProps> {
     constructor(props: IProgressProps) {
         super(props);
-
-        this.state = {
-            percent: 0
-        };
     }
 
     render() {
-        const { length = 80, height = 3, icon, backgroudcolor = '#5c5c5c', progresscolor = '#00b7c3' } = this.props;
-        const { percent } = this.state;
+        const { length = 80,
+            height = 3,
+            icon,
+            backgroudcolor = '#5c5c5c',
+            progresscolor = '#00b7c3',
+            percent
+        } = this.props;
         return (
             <div className='progressbar' style={{
                 width: `${length}%`,
@@ -36,7 +34,7 @@ export default class Progress extends React.Component<IProgressProps, IProgressS
                 <div className='fill-container'
                     style={{
                         marginLeft: 0,
-                        width: `${percent}%`,
+                        width: `${Math.floor(percent * 100)}%`,
                         height: `${height}px`,
                         backgroundColor: progresscolor
                     }} >

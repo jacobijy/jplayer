@@ -1,7 +1,8 @@
 // Modules to control application life and create native browser window
-import { app, BrowserWindow, dialog, Menu } from 'electron';
+import { app, BrowserWindow, globalShortcut } from 'electron';
 import { join } from 'path';
-import { readFile } from 'fs';
+import RegisterMenu from './menu';
+import RegisterShortcut from './shortcut';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -17,23 +18,8 @@ function createWindow() {
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
 
-    const template = [
-        {
-            label: 'File',
-            submenu: [
-                {
-                    label: 'open',
-                    click() {
-                        mainWindow.webContents.send('action', 'open');
-                    }
-                },
-                { label: 'exit', role: 'quit' }
-            ]
-        }
-    ];
-
-    const menu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(menu);
+    RegisterMenu();
+    RegisterShortcut();
 
     // Emitted when the window is closed.
     mainWindow.on('closed', () => {

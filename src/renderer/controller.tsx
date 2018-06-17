@@ -1,7 +1,9 @@
 import * as React from 'react';
 import Progress from './components/progress';
+import PlayPanel from './playpanel';
+import PlayButton from './playpanel';
 
-interface IControllerState {
+interface IControllerProps {
     time: number;
     totalTime: number;
     playing: boolean;
@@ -9,7 +11,7 @@ interface IControllerState {
     volume: number;
 }
 
-export default class Controller extends React.Component<{}, IControllerState> {
+export default class Controller extends React.Component<IControllerProps> {
     private controlPanel: HTMLDivElement;
 
     componentDidMount() {
@@ -25,6 +27,7 @@ export default class Controller extends React.Component<{}, IControllerState> {
     }
 
     render() {
+        const { time, totalTime, playing, paused, volume } = this.props;
         return (
             <div
                 id='controller'
@@ -32,7 +35,10 @@ export default class Controller extends React.Component<{}, IControllerState> {
                 onMouseOver={this.handleMouseOver.bind(this)}
                 onMouseOut={this.handleMouseOut.bind(this)}
             >
-                <Progress />
+                <Progress
+                    percent={time/totalTime}
+                />
+                <PlayPanel />
             </div>
         );
     }

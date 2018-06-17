@@ -22,6 +22,11 @@ module.exports = {
 
             { test: /\.css$/, loader: 'style-loader!css-loader'},
 
+            {
+                test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
+                loader: 'url-loader?limit=8192&name=images/[hash:8].[name].[ext]'
+            },
+
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
         ]
