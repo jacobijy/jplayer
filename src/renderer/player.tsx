@@ -12,7 +12,7 @@ interface IPlayerProps {
     handleVolumeChange: () => {}
 }
 
-export default class MainPlayer extends React.Component<IPlayerProps> {
+export default class Player extends React.Component<IPlayerProps> {
     private video: HTMLVideoElement;
 
     constructor(props: IPlayerProps) {

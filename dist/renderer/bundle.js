@@ -3032,19 +3032,19 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 __webpack_require__(/*! ./css/App.css */ "./src/renderer/css/App.css");
-var MainPlayer = /** @class */ (function (_super) {
-    __extends(MainPlayer, _super);
-    function MainPlayer(props) {
+var Player = /** @class */ (function (_super) {
+    __extends(Player, _super);
+    function Player(props) {
         return _super.call(this, props) || this;
     }
-    MainPlayer.prototype.render = function () {
+    Player.prototype.render = function () {
         var _this = this;
         var _a = this.props, handlePlaying = _a.handlePlaying, handlePause = _a.handlePause, handleVolumeChange = _a.handleVolumeChange;
         return (React.createElement("video", { width: '100%', height: '100%', onPlaying: handlePlaying, onPause: handlePause, onVolumeChange: handleVolumeChange, autoPlay: true, poster: 'file://C:\\Users\\aston\\Pictures\\iCloud%20Photos\\Downloads\\539A94D3-EAA6-4C16-9C01-A439C0D9C2D6-9129-000007B58BE705B1_tmp.jpg', ref: function (ref) { return _this.video = ref; } }));
     };
-    return MainPlayer;
+    return Player;
 }(React.Component));
-exports.default = MainPlayer;
+exports.default = Player;
 
 
 /***/ }),

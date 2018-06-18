@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import MainPlayer from './renderer/player';
+import Player from './renderer/player';
 import Controller from './renderer/controller';
 import { ipcRenderer, remote } from 'electron';
 
@@ -129,7 +128,7 @@ export default class JPlayer extends React.Component<{}, IJPlayerState> {
         const { time, totalTime, playing, paused = false, volume } = this.state;
         return (
             <div className='fill-container'>
-                <MainPlayer
+                <Player
                     window={{ width: 800, height: 600, scale: 1 }}
                     handlePause={this.handlePause.bind(this)}
                     handlePlaying={this.handlePlaying.bind(this)}
