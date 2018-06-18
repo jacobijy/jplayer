@@ -18,6 +18,7 @@ function createWindow() {
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
     BrowserWindow.addDevToolsExtension('C:\\Users\\aston\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\3.2.3_0');
+    BrowserWindow.addDevToolsExtension('C:\\Users\\aston\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\lmhkpmbekcpmknklioeibfkpmmfibljd\\2.15.2_0');
 
     RegisterMenu();
     RegisterShortcut();

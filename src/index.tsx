@@ -76,7 +76,7 @@ interface IJPlayerState {
     volume: number;
 }
 
-class JPlayer extends React.Component<{}, IJPlayerState> {
+export default class JPlayer extends React.Component<{}, IJPlayerState> {
     video: HTMLVideoElement;
     timer: number;
 
@@ -146,5 +146,3 @@ class JPlayer extends React.Component<{}, IJPlayerState> {
         );
     }
 }
-
-ReactDOM.render(<JPlayer />, document.getElementById('app'));

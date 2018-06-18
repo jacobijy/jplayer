@@ -16,6 +16,7 @@ function createWindow() {
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
     electron_1.BrowserWindow.addDevToolsExtension('C:\\Users\\aston\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\3.2.3_0');
+    electron_1.BrowserWindow.addDevToolsExtension('C:\\Users\\aston\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\lmhkpmbekcpmknklioeibfkpmmfibljd\\2.15.2_0');
     menu_1.default();
     shortcut_1.default();
     // Emitted when the window is closed.
