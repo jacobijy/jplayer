@@ -98,7 +98,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "* {\n    margin: 0;\n    padding: 0;\n}\n\nhtml, body, #app, .fill-container {\n    height: 100%;\n    width: 100%;\n    background-color: black;\n}\n\nvideo {\n    display: block;\n}\n\n.hide {\n    opacity: 0;\n}\n\n.bottom {\n    bottom: 40px;\n    width: 100%;\n    position: absolute;\n}\n\n#controller {\n    position: fixed;\n    height: 100%;\n    top: 0;\n    background-color: transparent;\n}\n\n#play-panel {\n    margin-left: calc(50% - 75px);\n    margin-top: 10px;\n}\n\n#play-panel>li {\n    margin-left: 5px;\n    margin-right: 5px;\n    width: 40px;\n    height: 40px;\n    border: 1px solid #fff;\n    display: inline-block;\n}\n\nli:hover {\n    background-color: #555;\n}\n\n#play-panel i {\n    color: #fff;\n    font-size: 35px;\n    opacity: 1;\n}", ""]);
+exports.push([module.i, "* {\n    margin: 0;\n    padding: 0;\n}\n\nhtml, body, #app, .fill-container {\n    height: 100%;\n    width: 100%;\n    background-color: black;\n}\n\nvideo {\n    display: block;\n}\n\n.hide {\n    opacity: 0;\n}\n\n.circle {\n    width: 20px;\n    height: 20px;\n    border-radius: 12px;\n    border: 2px solid #00b7c3;\n    background-color:black;\n    bottom: -12px;\n    left: -12px;\n    position: absolute;\n    cursor: pointer;\n}\n\n.bottom {\n    bottom: 0;\n    padding-bottom: 10px;\n    width: 100%;\n    position: absolute;\n    background-color:rgba(5, 5, 5, 0.5);\n}\n\n#controller {\n    position: fixed;\n    height: 100%;\n    top: 0;\n    background-color: transparent;\n}\n\n#play-panel {\n    margin-left: calc(50% - 75px);\n    margin-top: 10px;\n}\n\n#play-panel>li {\n    margin-left: 5px;\n    margin-right: 5px;\n    width: 40px;\n    height: 40px;\n    border: 1px solid transparent;\n    display: inline-block;\n}\n\n#play-panel>li:hover {\n    background-color: #555;\n    border-color: #fff;\n}\n\n#play-panel i {\n    color: #fff;\n    font-size: 35px;\n    opacity: 1;\n}", ""]);
 
 // exports
 
@@ -20761,10 +20761,34 @@ var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var Progress = /** @class */ (function (_super) {
     __extends(Progress, _super);
     function Progress(props) {
-        return _super.call(this, props) || this;
+        var _this = _super.call(this, props) || this;
+        window.addEventListener('mousemove', _this.changeProgress.bind(_this));
+        window.addEventListener('mouseup', _this.restoreCircle.bind(_this));
+        return _this;
     }
+    Progress.prototype.fillCircle = function () {
+        this.circleFocused = true;
+        this.circle.style.backgroundColor = '#00b7c3';
+    };
+    Progress.prototype.restoreCircle = function () {
+        this.circleFocused = false;
+        this.circle.style.backgroundColor = 'black';
+    };
+    Progress.prototype.changeProgress = function (event) {
+        if (!this.circleFocused || event.clientX === 0) {
+            return;
+        }
+        var _a = this.props.length, length = _a === void 0 ? 90 : _a, startX = window.innerWidth * (1 - length / 100) / 2, totalLength = window.innerWidth * length / 100;
+        this.circle.style.opacity = '1';
+        var clientX = event.clientX, progressLength = clientX - startX;
+        progressLength = progressLength >= 0 ? progressLength <= totalLength ? progressLength : totalLength : 0;
+        var percent = Math.floor(progressLength * 100 / totalLength);
+        this.circle.style.marginLeft = percent + "%";
+        this.bar.style.width = percent + "%";
+    };
     Progress.prototype.render = function () {
-        var _a = this.props, _b = _a.length, length = _b === void 0 ? 80 : _b, _c = _a.height, height = _c === void 0 ? 3 : _c, icon = _a.icon, _d = _a.backgroudcolor, backgroudcolor = _d === void 0 ? '#5c5c5c' : _d, _e = _a.progresscolor, progresscolor = _e === void 0 ? '#00b7c3' : _e, percent = _a.percent;
+        var _this = this;
+        var _a = this.props, _b = _a.length, length = _b === void 0 ? 90 : _b, _c = _a.height, height = _c === void 0 ? 3 : _c, icon = _a.icon, _d = _a.backgroudcolor, backgroudcolor = _d === void 0 ? '#5c5c5c' : _d, _e = _a.progresscolor, progresscolor = _e === void 0 ? '#00b7c3' : _e, percent = _a.percent;
         return (React.createElement("div", { className: 'progressbar', style: {
                 width: length + "%",
                 marginLeft: (100 - length) / 2 + "%",
@@ -20772,12 +20796,13 @@ var Progress = /** @class */ (function (_super) {
                 backgroundColor: backgroudcolor,
                 position: 'absolute'
             } },
-            React.createElement("div", { className: 'fill-container', style: {
+            React.createElement("div", { className: 'fill-container', ref: function (ref) { return _this.bar = ref; }, style: {
                     marginLeft: 0,
                     width: Math.floor(percent * 100) + "%",
                     height: height + "px",
                     backgroundColor: progresscolor
-                } })));
+                } }),
+            React.createElement("div", { className: 'circle', ref: function (ref) { return _this.circle = ref; }, style: { marginLeft: Math.floor(percent * 100) + "%" }, onMouseDown: this.fillCircle.bind(this), onMouseUp: this.restoreCircle.bind(this) })));
     };
     return Progress;
 }(React.Component));
