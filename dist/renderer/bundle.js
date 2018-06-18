@@ -98,7 +98,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "* {\n    margin: 0;\n    padding: 0;\n}\n\nhtml, body, #app, .fill-container {\n    height: 100%;\n    width: 100%;\n    background-color: black;\n}\n\nvideo {\n    display: block;\n}\n\n.hide {\n    opacity: 0;\n}\n\n#controller {\n    position: fixed;\n    height: 100%;\n    top: 0;\n    background-color: transparent;\n}\n", ""]);
+exports.push([module.i, "* {\n    margin: 0;\n    padding: 0;\n}\n\nhtml, body, #app, .fill-container {\n    height: 100%;\n    width: 100%;\n    background-color: black;\n}\n\nvideo {\n    display: block;\n}\n\n.hide {\n    opacity: 0;\n}\n\n.bottom {\n    bottom: 40px;\n    width: 100%;\n    position: absolute;\n}\n\n#controller {\n    position: fixed;\n    height: 100%;\n    top: 0;\n    background-color: transparent;\n}\n\n#play-panel {\n    margin-left: calc(50% - 75px);\n    margin-top: 10px;\n}\n\n#play-panel>li {\n    margin-left: 5px;\n    margin-right: 5px;\n    width: 40px;\n    height: 40px;\n    border: 1px solid #fff;\n    display: inline-block;\n}\n\nli:hover {\n    background-color: #555;\n}\n\n#play-panel i {\n    color: #fff;\n    font-size: 35px;\n    opacity: 1;\n}", ""]);
 
 // exports
 
@@ -20624,6 +20624,7 @@ var player_1 = __webpack_require__(/*! ./renderer/player */ "./src/renderer/play
 var controller_1 = __webpack_require__(/*! ./renderer/controller */ "./src/renderer/controller.tsx");
 var electron_1 = __webpack_require__(/*! electron */ "electron");
 electron_1.ipcRenderer.on('action', function (event, arg) {
+    var video = document.querySelector('video');
     switch (arg) {
         case 'open':
             var currentFile = null;
@@ -20636,11 +20637,44 @@ electron_1.ipcRenderer.on('action', function (event, arg) {
             });
             if (files) {
                 currentFile = files[0];
-                var video = document.querySelector('video');
                 video.src = "file://" + currentFile;
                 // readFile(currentFile, (err: Error, buffer: Buffer) => {
                 //     console.log(buffer);
                 // });
+            }
+            break;
+        case 'play/pause':
+            {
+                if (video.paused) {
+                    video.play();
+                }
+                else {
+                    video.pause();
+                }
+            }
+            break;
+        case 'playforward':
+            {
+                var time = Math.min(video.duration, video.currentTime + 10);
+                video.currentTime = time;
+            }
+            break;
+        case 'playback':
+            {
+                var time = Math.max(0, video.currentTime - 10);
+                video.currentTime = time;
+            }
+            break;
+        case 'volumeup':
+            {
+                var volume = Math.min(1, video.volume + 0.1);
+                video.volume = volume;
+            }
+            break;
+        case 'volumedown':
+            {
+                var volume = Math.max(0, video.volume - 0.1);
+                video.volume = volume;
             }
             break;
         default:
@@ -20691,7 +20725,7 @@ var JPlayer = /** @class */ (function (_super) {
         });
     };
     JPlayer.prototype.render = function () {
-        var _a = this.state, time = _a.time, totalTime = _a.totalTime, playing = _a.playing, paused = _a.paused, volume = _a.volume;
+        var _a = this.state, time = _a.time, totalTime = _a.totalTime, playing = _a.playing, _b = _a.paused, paused = _b === void 0 ? false : _b, volume = _a.volume;
         return (React.createElement("div", { className: 'fill-container' },
             React.createElement(player_1.default, { window: { width: 800, height: 600, scale: 1 }, handlePause: this.handlePause.bind(this), handlePlaying: this.handlePlaying.bind(this), handleVolumeChange: this.handleVolumeChange.bind(this) }),
             React.createElement(controller_1.default, { time: time, totalTime: totalTime, playing: playing, paused: paused, volume: volume })));
@@ -20736,7 +20770,6 @@ var Progress = /** @class */ (function (_super) {
                 marginLeft: (100 - length) / 2 + "%",
                 height: height + "px",
                 backgroundColor: backgroudcolor,
-                bottom: '100px',
                 position: 'absolute'
             } },
             React.createElement("div", { className: 'fill-container', style: {
@@ -20791,10 +20824,11 @@ var Controller = /** @class */ (function (_super) {
         this.controlPanel.className = 'fill-container hide';
     };
     Controller.prototype.render = function () {
-        var _a = this.props, time = _a.time, totalTime = _a.totalTime, playing = _a.playing, paused = _a.paused, volume = _a.volume;
+        var _a = this.props, time = _a.time, _b = _a.totalTime, totalTime = _b === void 0 ? 0 : _b, playing = _a.playing, paused = _a.paused, volume = _a.volume;
         return (React.createElement("div", { id: 'controller', className: 'fill-container', onMouseOver: this.handleMouseOver.bind(this), onMouseOut: this.handleMouseOut.bind(this) },
-            React.createElement(progress_1.default, { percent: time / totalTime }),
-            React.createElement(playpanel_1.default, null)));
+            React.createElement("div", { className: 'bottom' },
+                React.createElement(progress_1.default, { percent: totalTime === 0 ? 0 : time / totalTime }),
+                React.createElement(playpanel_1.default, { paused: paused }))));
     };
     return Controller;
 }(React.Component));
@@ -20924,8 +20958,9 @@ var MainPlayer = /** @class */ (function (_super) {
         return _super.call(this, props) || this;
     }
     MainPlayer.prototype.render = function () {
+        var _this = this;
         var _a = this.props, handlePlaying = _a.handlePlaying, handlePause = _a.handlePause, handleVolumeChange = _a.handleVolumeChange;
-        return (React.createElement("video", { width: '100%', height: '100%', onPlaying: handlePlaying, onPause: handlePause, onVolumeChange: handleVolumeChange, autoPlay: true }));
+        return (React.createElement("video", { width: '100%', height: '100%', onPlaying: handlePlaying, onPause: handlePause, onVolumeChange: handleVolumeChange, autoPlay: true, poster: 'file://C:\\Users\\aston\\Pictures\\iCloud%20Photos\\Downloads\\539A94D3-EAA6-4C16-9C01-A439C0D9C2D6-9129-000007B58BE705B1_tmp.jpg', ref: function (ref) { return _this.video = ref; } }));
     };
     return MainPlayer;
 }(React.Component));
@@ -20961,13 +20996,43 @@ var PlayPanel = /** @class */ (function (_super) {
     function PlayPanel() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    PlayPanel.prototype.handlePlayOperation = function (index) {
+        var video = document.querySelector('video');
+        switch (index) {
+            case 1:
+                {
+                    var time = Math.max(0, video.currentTime - 10);
+                    video.currentTime = time;
+                }
+                break;
+            case 2:
+                {
+                    if (video.paused) {
+                        video.play();
+                    }
+                    else {
+                        video.pause();
+                    }
+                }
+                break;
+            case 3:
+                {
+                    var time = Math.min(video.duration, video.currentTime + 10);
+                    video.currentTime = time;
+                }
+                break;
+            default:
+                break;
+        }
+    };
     PlayPanel.prototype.render = function () {
-        return (React.createElement("div", null,
-            React.createElement("span", null,
+        var paused = this.props.paused;
+        return (React.createElement("ul", { id: 'play-panel' },
+            React.createElement("li", { onClick: this.handlePlayOperation.bind(this, 1) },
                 React.createElement("i", { className: 'icon iconfont icon-left' })),
-            React.createElement("span", null,
-                React.createElement("i", { className: 'icon iconfont icon-triangle' })),
-            React.createElement("span", null,
+            React.createElement("li", { onClick: this.handlePlayOperation.bind(this, 2) },
+                React.createElement("i", { className: "icon iconfont " + (paused ? 'icon-triangle' : 'icon-pause') })),
+            React.createElement("li", { onClick: this.handlePlayOperation.bind(this, 3) },
                 React.createElement("i", { className: 'icon iconfont icon-right' }))));
     };
     return PlayPanel;

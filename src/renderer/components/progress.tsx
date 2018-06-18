@@ -28,7 +28,6 @@ export default class Progress extends React.Component<IProgressProps> {
                 marginLeft: `${(100 - length) / 2}%`,
                 height: `${height}px`,
                 backgroundColor: backgroudcolor,
-                bottom: '100px',
                 position: 'absolute'
             }}>
                 <div className='fill-container'
@@ -38,7 +37,6 @@ export default class Progress extends React.Component<IProgressProps> {
                         height: `${height}px`,
                         backgroundColor: progresscolor
                     }} >
-
                 </div>
             </div>
         );

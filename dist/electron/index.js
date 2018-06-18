@@ -15,6 +15,7 @@ function createWindow() {
     mainWindow.loadURL("file://" + path_1.join(__dirname, '../index.html'));
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
+    electron_1.BrowserWindow.addDevToolsExtension('C:\\Users\\aston\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\3.2.3_0');
     menu_1.default();
     shortcut_1.default();
     // Emitted when the window is closed.
@@ -23,6 +24,18 @@ function createWindow() {
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
         mainWindow = null;
+    });
+    // When window is blur unregister shortcuts
+    mainWindow.on('blur', function () {
+        var win = electron_1.BrowserWindow.getFocusedWindow();
+        if (win) {
+            return;
+        }
+        electron_1.globalShortcut.unregisterAll();
+    });
+    // When window is focus register shortcuts
+    mainWindow.on('focus', function () {
+        shortcut_1.default();
     });
 }
 // This method will be called when Electron has finished

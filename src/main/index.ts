@@ -17,6 +17,7 @@ function createWindow() {
 
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
+    BrowserWindow.addDevToolsExtension('C:\\Users\\aston\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\3.2.3_0');
 
     RegisterMenu();
     RegisterShortcut();
@@ -27,6 +28,21 @@ function createWindow() {
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
         mainWindow = null;
+    });
+
+    // When window is blur unregister shortcuts
+    mainWindow.on('blur', () => {
+        const win = BrowserWindow.getFocusedWindow();
+        if (win)
+        {
+            return;
+        }
+        globalShortcut.unregisterAll();
+    });
+
+    // When window is focus register shortcuts
+    mainWindow.on('focus', () => {
+        RegisterShortcut();
     });
 }
 

@@ -17,9 +17,39 @@ video {
     opacity: 0;
 }
 
+.bottom {
+    bottom: 40px;
+    width: 100%;
+    position: absolute;
+}
+
 #controller {
     position: fixed;
     height: 100%;
     top: 0;
     background-color: transparent;
+}
+
+#play-panel {
+    margin-left: calc(50% - 75px);
+    margin-top: 10px;
+}
+
+#play-panel>li {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #fff;
+    display: inline-block;
+}
+
+li:hover {
+    background-color: #555;
+}
+
+#play-panel i {
+    color: #fff;
+    font-size: 35px;
+    opacity: 1;
 }

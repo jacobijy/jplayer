@@ -27,7 +27,7 @@ export default class Controller extends React.Component<IControllerProps> {
     }
 
     render() {
-        const { time, totalTime, playing, paused, volume } = this.props;
+        const { time, totalTime = 0, playing, paused, volume } = this.props;
         return (
             <div
                 id='controller'
@@ -35,10 +35,12 @@ export default class Controller extends React.Component<IControllerProps> {
                 onMouseOver={this.handleMouseOver.bind(this)}
                 onMouseOut={this.handleMouseOut.bind(this)}
             >
-                <Progress
-                    percent={time/totalTime}
-                />
-                <PlayPanel />
+                <div className='bottom'>
+                    <Progress
+                        percent={totalTime === 0 ? 0 : time / totalTime}
+                    />
+                    <PlayPanel paused={paused} />
+                </div>
             </div>
         );
     }
